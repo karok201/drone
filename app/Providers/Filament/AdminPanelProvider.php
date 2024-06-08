@@ -53,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->sidebarWidth('13rem');
+            ->sidebarWidth('13rem')
+            ->topNavigation();
     }
 }

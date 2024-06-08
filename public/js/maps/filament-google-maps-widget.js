@@ -93,6 +93,7 @@ export default function googleMapsWidget({
         zoom: this.config.zoom,
         ...this.config.controls,
         ...this.config.mapConfig,
+        streetViewControl: false,
     });
 
         const restrictedZones = [
@@ -214,10 +215,10 @@ export default function googleMapsWidget({
 
     // ---  Задаем границы области, где нужно отображать шестиугольники ---
     const bounds = {
-        south: 47.145329,
-        west: 38.780349,
-        north: 47.297019,
-        east: 38.995014
+        south: 47.04966614389952,
+        west: 38.47513875803426,
+        north: 47.411946080503235,
+        east: 39.13337216704194
     };
 
         // --- Генерируем сетку шестиугольников ---
@@ -340,7 +341,6 @@ export default function googleMapsWidget({
             plan[i] = {lat: parseFloat(location.path[i].lng), lng: parseFloat(location.path[i].lat) }
         }
 
-        console.log(plan, flightPlanCoordinates);
 
         const flightPath = new google.maps.Polyline({
             path: plan,
@@ -386,15 +386,60 @@ export default function googleMapsWidget({
       return marker;
     },
 
-    lol: function () {
-        console.log(2);
-    },
     createMarkers: function () {
       this.markers = this.data.map((location) => {
         const marker = this.createMarker(location);
         marker.setMap(this.map);
 
-        if (this.config.markerAction) {
+          setInterval(updateMarker,2500);
+
+          function updateMarker() {
+              console.log(1);
+              fetch("/api/drones/getCurrentPosition", {
+                  method: "POST",
+                  headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                  }
+              })
+                  .then((response) => response.json())
+                  .then((json) => {
+                      for (let i = 0; i < json.length; i++) {
+                          if (json[i].id == marker.model_id) {
+                              var result = {latitude: json[i].lat, longitude: json[i].lgt };
+                              transition(result);
+                          }
+                      }
+                  });
+          }
+
+          var position = [marker.position.lat(), marker.position.lng()];
+
+          var numDeltas = 100;
+          var delay = 10; //milliseconds
+          var i = 0;
+          var deltaLat;
+          var deltaLng;
+          function transition(result){
+              i = 0;
+              deltaLat = (result.latitude - position[0])/numDeltas;
+              deltaLng = (result.longitude - position[1])/numDeltas;
+              moveMarker();
+          }
+
+          function moveMarker(){
+              position[0] += deltaLat;
+              position[1] += deltaLng;
+              var latlng = new google.maps.LatLng(position[0], position[1]);
+              // console.log(position[0]);
+              marker.setPosition(latlng);
+              if(i!=numDeltas){
+                  i++;
+                  setTimeout(moveMarker, delay);
+              }
+          }
+
+
+          if (this.config.markerAction) {
           google.maps.event.addListener(marker, "click", (event) => {
             this.$wire.mountAction(this.config.markerAction, {
               model_id: marker.model_id,

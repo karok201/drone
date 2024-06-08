@@ -16,6 +16,8 @@ class MapPoint extends Model
     public const FIELD_LATITUDE = 'latitude';
     public const FIELD_USER_ID = 'user_id';
     public const FIELD_DRONE_TYPE_ID = 'drone_type_id';
+    public const FIELD_LAST_LONGITUDE = 'last_longitude';
+    public const FIELD_LAST_LATITUDE = 'last_latitude';
 
     public function droneType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

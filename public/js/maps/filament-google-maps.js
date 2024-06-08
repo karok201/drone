@@ -278,10 +278,10 @@ export default function filamentGoogleMapsField({
 
         // ---  Задаем границы области, где нужно отображать шестиугольники ---
         const bounds = {
-            south: 47.145329,
-            west: 38.780349,
-            north: 47.297019,
-            east: 38.995014
+            south: 47.04966614389952,
+            west: 38.47513875803426,
+            north: 47.411946080503235,
+            east: 39.13337216704194
         };
 
         // --- Генерируем сетку шестиугольников ---
@@ -601,6 +601,12 @@ export default function filamentGoogleMapsField({
           }
         );
       }
+    },
+    handleChanges: async function() {
+        while (true) {
+            console.log(1);
+            setTimeout(1);
+        }
     },
     updateMap: function (position) {
       this.marker.setPosition(position);

@@ -43,7 +43,7 @@ class DroneTypeResource extends Resource
 
                 Forms\Components\Section::make('Дополнительно')->schema([
                     Forms\Components\TextInput::make(DroneType::FIELD_MAX_SPEED)
-                        ->label('Максимальная скорость (км/ч)')
+                        ->label('Максимальная скорость (м/с)')
                         ->required()
                         ->numeric()
                 ])
