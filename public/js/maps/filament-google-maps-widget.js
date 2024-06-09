@@ -1,6 +1,10 @@
 // import { MarkerClusterer } from "@googlemaps/markerclusterer";
 // import debounce from "underscore/modules/debounce.js";
 
+
+var selectedMarker = null;
+var infoBoxContainer = document.getElementById('infoBoxContainer');
+
 export default function googleMapsWidget({
   cachedData,
   config,
@@ -80,6 +84,7 @@ export default function googleMapsWidget({
     },
 
     callWire: function (thing) {},
+
 
     createMap: function () {
       window.filamentGoogleMapsAPILoaded = true;
@@ -194,6 +199,12 @@ export default function googleMapsWidget({
     }
 
     // --- Функция для генерации координат шестиугольника ---
+    google.maps.event.addListener(this.map, 'click', function(event) {
+        if (selectedMarker) {
+            transition(selectedMarker, [event.latLng.lat(), event.latLng.lng()]);
+        }
+        infoBoxContainer.style.display = "none";
+    });
     function generateHexagonCoordinates(centerLat, centerLon, radius) {
         const points = [];
         for (let i = 0; i < 6; i++) {

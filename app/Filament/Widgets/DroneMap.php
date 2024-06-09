@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Flight;
 use App\Models\MapPoint;
 use Cheesegrits\FilamentGoogleMaps\Actions\GoToAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
@@ -88,11 +89,15 @@ class DroneMap extends MapTableWidget
 		{
             $path = [];
 
-            foreach (json_decode($location->path, true) as $item) {
-                $path[] = [
-                    'lat' => $item[0],
-                    'lng' => $item[1],
-                ];
+            $lol = Flight::query()->where('map_point_id', $location->id)->first();
+
+            if (!$lol) {
+                foreach (json_decode($lol->path, true) as $item) {
+                    $path[] = [
+                        'lat' => $item[0],
+                        'lng' => $item[1],
+                    ];
+                }
             }
 
 			$data[] = [

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Register;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,6 +18,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,8 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Green,
             ])
+            ->brandLogo(asset('images/logo.jpeg'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -39,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
             ])
+            ->registration(Register::class)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -54,6 +59,12 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->sidebarWidth('13rem')
-            ->topNavigation();
+            ->topNavigation()
+            ->plugin(
+                FilamentFullCalendarPlugin::make()
+                    ->selectable()
+                    ->editable()
+                    ->locale('ru')
+            );
     }
 }

@@ -9,9 +9,11 @@
         "cheesegrits/filament-google-maps": "^3.0",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "jeffgreco13/filament-breezy": "*",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "saade/filament-fullcalendar": "^3.0",
         "traineratwot/filament-openstreetmap": "^1.2"
     },
     "require-dev": {

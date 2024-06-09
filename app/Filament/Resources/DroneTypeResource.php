@@ -19,7 +19,7 @@ class DroneTypeResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
     protected static ?string $modelLabel = 'Модель дрона';
 
@@ -43,10 +43,12 @@ class DroneTypeResource extends Resource
 
                 Forms\Components\Section::make('Дополнительно')->schema([
                     Forms\Components\TextInput::make(DroneType::FIELD_MAX_SPEED)
-                        ->label('Максимальная скорость (м/с)')
+                        ->default(1)
+                        ->hidden()
                         ->required()
                         ->numeric()
                 ])
+                    ->hidden(true)
                 ->columns()
             ]);
     }
